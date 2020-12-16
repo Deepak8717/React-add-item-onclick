@@ -1,34 +1,52 @@
 import React from "react";
-//import React from "react";
-import { render } from "react-dom";
-//import { render } from "react-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-//import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import data from "./data";
+import "./App.css";
 
-import About from "./Components/About";
-import Home from "./Components/Home";
-import Topics from "./Components/Topics";
+class App extends React.Component {
+  state = {
+    dishes: data.dishes,
+    dishIndex: 0,
+  };
 
-const App = () => (
-  <Router>
-    <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/topics">Topics</Link>
-        </li>
-      </ul>
-      <hr />
-      <Route exact path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/topics" component={Topics} />
-    </div>
-  </Router>
-);
+  prev = () => {
+    this.setState((prevState) => {
+      return {
+        dishIndex: prevState.dishIndex - 1,
+      };
+    });
+  };
+  next = () => {
+    this.setState((prevState) => {
+      return {
+        dishIndex: prevState.dishIndex + 1,
+      };
+    });
+  };
+  render() {
+    const { dishIndex, dishes } = this.state;
+    const rowStyle = {
+      transform: `translateX(-${dishIndex * (100 / dishes.length)}%)`,
+    };
+    return (
+      <div className="App">
+        <div className="wrapper">
+          <div className="row" style={rowStyle}>
+            {dishes.map((dish) => (
+              <div className="slide" key={dish.index}>
+                <img src={dish.url} alt="A Dish" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <button onClick={this.prev} disabled={dishIndex === 0}>
+          Prev
+        </button>
+        <button onClick={this.next} disabled={dishIndex === dishes.length - 1}>
+          Next
+        </button>
+      </div>
+    );
+  }
+}
 
 export default App;

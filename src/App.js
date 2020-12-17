@@ -1,24 +1,41 @@
-import React from "react";
-import { render } from "react-dom";
-import "./App.css";
+import React, { Component } from "react";
 
-class App extends React.Component {
+const styles = {
+  fontFamily: "sans-serif",
+  textAlign: "center",
+};
+
+const ProgressBar = (props) => (
+  <div
+    style={{
+      display: "block",
+      width: `${props.percentage}%`,
+      height: 20,
+      background: "#ccc",
+    }}
+  />
+);
+
+class App extends Component {
   state = {
-    color: "red",
+    percentage: 0,
   };
-
-  toggleClass = () => {
-    this.setState({ color: this.state.color === "red" ? "blue" : "red" });
-  };
-
+  componentDidMount() {
+    setInterval(() => {
+      let nextPercent = this.state.percentage + 1;
+      if (nextPercent >= 100) {
+        nextPercent = 0;
+      }
+      this.setState({ percentage: nextPercent });
+    }, 1000);
+  }
   render() {
     return (
-      <div>
-        <p className={`${this.state.color}`}>click toggle to change colors</p>
-        <button onClick={this.toggleClass}>toggle</button>
+      <div style={styles}>
+        <h2>Progress bar</h2>
+        <ProgressBar percentage={this.state.percentage} />
       </div>
     );
   }
 }
-
 export default App;

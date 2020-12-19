@@ -1,41 +1,56 @@
-import React, { Component } from "react";
+import React from "react";
+import { render } from "react-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import posts from "./posts.json";
 
-const styles = {
-  fontFamily: "sans-serif",
-  textAlign: "center",
-};
-
-const ProgressBar = (props) => (
-  <div
-    style={{
-      display: "block",
-      width: `${props.percentage}%`,
-      height: 20,
-      background: "#ccc",
-    }}
-  />
+const Layout = (props) => (
+  <div>
+    <h1>Bender's Most awesome blog</h1>
+    <hr />
+    <div>{props.children}</div>
+  </div>
 );
 
-class App extends Component {
-  state = {
-    percentage: 0,
-  };
-  componentDidMount() {
-    setInterval(() => {
-      let nextPercent = this.state.percentage + 1;
-      if (nextPercent >= 100) {
-        nextPercent = 0;
-      }
-      this.setState({ percentage: nextPercent });
-    }, 1000);
-  }
-  render() {
-    return (
-      <div style={styles}>
-        <h2>Progress bar</h2>
-        <ProgressBar percentage={this.state.percentage} />
-      </div>
-    );
-  }
-}
+const PostsList = ({ posts }) => (
+  <div>
+    <ul>
+      {posts.map((post) => (
+        <li>
+          <Link to={`/post/${post.id}`}>
+            <h2>{post.title}</h2>
+          </Link>
+          <p>
+            Published by <strong>{post.author}</strong>on{post.publishedAt}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const PostPage = ({ post }) => (
+  <div>
+    <h2>{post.title}</h2>
+    <div>{post.content}</div>
+    <p>
+      <Link to="/">Back</Link>
+    </p>
+  </div>
+);
+
+const App = () => (
+  <Router>
+    <Layout>
+      <Switch>
+        <Route exact path="/" render={() => <PostsList posts={posts} />} />
+        <Route
+          path="/post/:id"
+          render={({ match }) => <PostPage post={posts[match.params.id - 1]} />}
+        />
+        <Route render={() => <div>Post not found</div>} />
+      </Switch>
+    </Layout>
+  </Router>
+);
+
 export default App;

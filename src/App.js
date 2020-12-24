@@ -1,28 +1,34 @@
 import React from "react";
 import { render } from "react-dom";
 
-const styles = {
-  fontSize: 48,
-  background: "red",
-  margin: "40px",
-  padding: "40 40",
-  borderRadius: "4px",
-};
-
 class App extends React.Component {
-  state = {
-    isToggleOn: true,
-  };
-  handleClick = () => {
-    this.setState((prevState) => ({
-      isToggleOn: !prevState.isToggleOn,
-    }));
-  };
+  constructor(props) {
+    super(props);
+    this.handleToggleVisibility = this.handleToggleVisibility.bind(this);
+    this.state = {
+      visibility: false,
+    };
+  }
+  handleToggleVisibility() {
+    this.setState((prevState) => {
+      return {
+        visibility: !prevState.visibility,
+      };
+    });
+  }
   render() {
     return (
-      <button style={styles} onClick={this.handleClick}>
-        {this.state.isToggleOn ? "On" : "Off"}
-      </button>
+      <div>
+        <h1>visibility Toggler!</h1>
+        <button onClick={this.handleToggleVisibility}>
+          {this.state.visibility ? "Hide Details" : "Show Details"}
+        </button>
+        {this.state.visibility && (
+          <div>
+            <p>You can now see and read me man!</p>
+          </div>
+        )}
+      </div>
     );
   }
 }

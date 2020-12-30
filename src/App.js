@@ -1,29 +1,57 @@
 import React from "react";
-import { render } from "react-dom";
-import Hello from "./Components/Hello";
-import Father from "./Father";
-import Child from "./Child";
-
-const App = () => (
-  <div>
-    <Hello name="Deepak" />
-    <h2>Props and state</h2>
-    <div>
-      <Father
-        name={"Jesus"}
-        surname={"OnlyJesus"}
-        renderMyChildren={({ surname, name }) => {
-          return (
-            <React.Fragment>
-              <Child name={"Pork"} surname={surname} />
-              <Child name={"Beef"} surname={surname} />
-              <Child name={"Chicken"} surname={surname} />
-            </React.Fragment>
-          );
-        }}
-      />
-    </div>
-  </div>
-);
+import Popup from "./Popup";
+import "./App.css";
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      showPopup: false,
+    };
+  }
+  togglePopUp() {
+    this.setState({
+      showPopup: !this.state.showPopup,
+    });
+  }
+  render() {
+    return (
+      <div className="app">
+        <h1>hihi</h1>
+        <button onClick={this.togglePopUp.bind(this)}>Show Popup</button>
+        <button
+          onClick={() => {
+            alert("Woo?");
+          }}
+        >
+          try me when popup is open
+        </button>
+        <p>
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+          Ganz viel inhalt.
+          <br />
+        </p>
+        {this.state.showPopup ? (
+          <Popup text="close me" closePopup={this.togglePopUp.bind(this)} />
+        ) : null}
+      </div>
+    );
+  }
+}
 
 export default App;

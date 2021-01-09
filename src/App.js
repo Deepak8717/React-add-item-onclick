@@ -1,8 +1,11 @@
 import React from "react";
-import Slider from "./Slider";
+import ProgressBar from "./ProgressBar";
+import ProgressBarExample from "./ProgressBarExample";
+
+import "./App.css";
 
 function App() {
-  return <Slider />;
+  return <ProgressBarExample />;
 }
 
 export default App;

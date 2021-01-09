@@ -1,11 +1,18 @@
 import React from "react";
-import ProgressBar from "./ProgressBar";
-import ProgressBarExample from "./ProgressBarExample";
-
+import Form from "./Form";
 import "./App.css";
 
-function App() {
-  return <ProgressBarExample />;
+class App extends React.Component {
+  constructor(props) {
+    super();
+  }
+  render() {
+    return (
+      <div>
+        <Form />
+      </div>
+    );
+  }
 }
 
 export default App;

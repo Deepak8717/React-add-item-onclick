@@ -1,55 +1,31 @@
-import React from "react";
-import "./App.css";
+import React, { Component } from "react";
+import { render } from "react-dom";
 
-class App extends React.Component {
+export default class App extends Component {
   state = {
-    rows: [{}],
-  };
-  handleAddRow = () => {
-    const item = {
-      name: "",
-      mobile: "",
-    };
-    this.setState({
-      rows: [...this.state.rows, item],
-    });
+    beers: [],
   };
 
+  fetchBeers = (param) => {
+    fetch(`https://api.punkapi.com/v2/beers?${param}`)
+      .then((data) => data.json())
+      .then((beers) => {
+        this.setState({ beers });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   render() {
+    let beers = this.state.beers.map((beer) => <p>{beer.name}</p>);
     return (
       <div>
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Mobile</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.rows.map((item, idx) => (
-                    <tr id="addr0" key={idx}>
-                      <td>{idx}</td>
-                      <td>
-                        <input type="text" name="name" />
-                      </td>
-                      <td>
-                        <input type="text" name="mobile" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <button onClick={this.handleAddRow}>Add Row</button>
-            </div>
-          </div>
-        </div>
+        <button onClick={this.fetchBeers}>All</button>
+        <button onClick={() => this.fetchBeers("food=taco")}>
+          Beers for taco !
+        </button>
+        <section>{beers}</section>
       </div>
     );
   }
 }
-
-export default App;
